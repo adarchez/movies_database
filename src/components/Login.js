@@ -1,3 +1,5 @@
+import axios from "axios";
+
 function Login () {
 
     const submitHandler = e => {
@@ -24,6 +26,12 @@ function Login () {
         }
 
         console.log("Todo ok para enviar tus datos");
+
+        axios
+            .post('http://challenge-react.alkemy.org', { email, password })
+            .then(res => {
+                console.log(res.data);
+            });
     }
 
     return(
