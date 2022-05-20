@@ -6,6 +6,7 @@ function Footer () {
                     <li><a href="http://instagram.com" rel="noopener noreferrer">IG</a></li>
                 </ul>
             </nav>
+            <p>Copyright Amaro</p>
         </footer>
     )
 }
