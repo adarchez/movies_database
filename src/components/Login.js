@@ -1,7 +1,10 @@
 import axios from "axios";
 import swal from "@sweetalert/with-react";
+import { useNavigate } from 'react-router-dom';
 
 function Login () {
+
+    const navigate = useNavigate()
 
     const submitHandler = e => {
         e.preventDefault();
@@ -32,6 +35,7 @@ function Login () {
                 swal(<h2>Ingresaste correctamente</h2>);
                 const userToken = res.data.token;
                 localStorage.setItem('token', userToken);
+                navigate('/listado');
             });
     }
 
