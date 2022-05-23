@@ -9,14 +9,14 @@ import "./css/bootstrap.min.css";
 
 function App() {
   return (
-    <>
+    <div className='container mt-3'>
       <Header></Header>
       <Routes>
         <Route exact path="/" element={<Login />}></Route>
         <Route path="/listado" element={<Listado />}></Route>
       </Routes>
       <Footer></Footer>
-    </>
+    </div>
   );
 }
 

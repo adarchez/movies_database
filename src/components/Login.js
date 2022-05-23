@@ -43,17 +43,15 @@ function Login () {
         <>
             <h2>Formulario de login.</h2>
             <form onSubmit={submitHandler}>
-                <label>
-                    <span>Correo electrónico:</span><br />
-                    <input type="email" name="email" />
-                </label>
-                <br />
-                <label>
-                    <span>Contraseña:</span><br />
-                    <input type="password" name="password"/>
-                </label>
-                <br />
-                <button type="submit">Ingresar</button>
+                <div className="mb-3">
+                    <label htmlFor="inputEmail" className="form-label">Correo electrónico:</label>
+                    <input className="form-control" id="inputEmail" type="email" name="email" />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="inputPass" className="form-label">Contraseña:</label>
+                    <input className="form-control" id="inputPass" type="password" name="password"/>
+                </div>
+                <button type="submit" className="btn btn-primary">Ingresar</button>
             </form>
         </>
     )
