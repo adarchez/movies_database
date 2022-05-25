@@ -5,7 +5,7 @@ import swal from "@sweetalert/with-react";
 
 function Listado() {
 
-    const token = localStorage.getItem('token');
+    let token = sessionStorage.getItem('token');
     const [moviesList, setMoviesList] = useState([]);
 
     useEffect(() => {
