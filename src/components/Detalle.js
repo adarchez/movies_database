@@ -3,47 +3,51 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import swal from "@sweetalert/with-react";
 
-function Detalle () {
+function Detalle() {
 
     let token = sessionStorage.getItem('token');
     let query = new URLSearchParams(window.location.search);
     let movieId = query.get("movieId");
 
-    const [ movie, setMovie ] = useState([]);
+    const [movie, setMovie] = useState(null);
 
     useEffect(() => {
         const endPoint = `https://api.themoviedb.org/3/movie/${movieId}?api_key=1aeabb44f43a9dd9dda9d0fdbf53257e&language=es-ES`;
         axios.get(endPoint)
             .then(response => {
-                let data = response.data.results;
+                let data = response.data;
                 setMovie(data);
             })
             .catch(error => {
-                swal(<h2>Error en el servidor de peliculas.</h2>)
+                swal(error);
             })
-    },[]);
+    }, []);
 
     return (
         <>
-            { !token && <Navigate to='/' /> }
-            <h2>Titulo: </h2>
-            <div className='row'>
-                <div className='col-4'>
-                    Imagen
+            {!token && <Navigate to='/' />}
+            {!movie && <p>Cargando...</p>}
+            {movie && <>
+                <h2>Título: {movie.title} </h2>
+                <div className='row'>
+                    <div className='col-4'>
+                        <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} className="img-fluid" alt="movie poster" />
+                    </div>
+                    <div className='col-8'>
+                        <h5>Fecha de estreno: </h5><p>{movie.release_date}</p>
+                        <h5>Reseña:</h5>
+                        <p>{movie.overview}</p>
+                        <h5>Rating: </h5> <p>{movie.vote_average}</p>
+                        <h5>Géneros:</h5>
+                        <ul>
+                            {movie.genres.map((genre) => (
+                                <li key={genre.id}>{genre.name}</li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
-                <div className='col-8'>
-                    <h5>Fecha de estreno: </h5>
-                    <h5>Reseñar: </h5>
-                    <p>Lasjdkakjdsfnskjdnslfdasdma skdas djasd asdas</p>
-                    <h5>Géneros:</h5>
-                    <ul>
-                        <li>Genero 1</li>
-                        <li>Genero 2</li>
-                        <li>Genero 3</li>
-                        <li>Genero 4</li>
-                    </ul>
-                </div>
-            </div>
+            </>
+            }
         </>
     )
 }
