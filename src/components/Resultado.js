@@ -1,37 +1,40 @@
-import { Navigate, Link } from 'react-router-dom';
+import axios from "axios";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import swal from "@sweetalert/with-react";
+import { Navigate, Link } from 'react-router-dom';
 
-function Listado (props) {
-    
+function Resultado() {
+
     let token = sessionStorage.getItem('token');
-    const [moviesList, setMoviesList] = useState([]);
+    let queryString = new URLSearchParams(window.location.search);
+    let keyString = queryString.get("keyword");
+
+    const [moviesResults, setMoviesResults] = useState([]);
 
     useEffect(() => {
-        const endPoint = 'https://api.themoviedb.org/3/discover/movie?api_key=1aeabb44f43a9dd9dda9d0fdbf53257e&language=es-ES';
+        const endPoint = `https://api.themoviedb.org/3/search/movie?api_key=1aeabb44f43a9dd9dda9d0fdbf53257e&language=es-ES&query=${keyString}`;
         axios.get(endPoint)
             .then(response => {
-                let data = response.data.results;
-                setMoviesList(data);
+                let moviesArray = response.data.results;
+                setMoviesResults(moviesArray);
             })
             .catch(error => {
-                swal(<h2>Error en el servicor de peliculas.</h2>)
+                swal(<h5>Error en el servidor de la API</h5>)
             })
-    },[]);
+    }, [moviesResults])
 
     return (
         <>
             {!token && <Navigate to='/' />}
             <div className="row">
-                {moviesList.map((movie) => (
+                <h2>Resultados de la búsqueda: <em>{keyString}</em></h2>
+                {moviesResults.length === 0 && <h4>No hay resultados</h4>}
+                {moviesResults.map((movie) => (
                     <div className="col-3 my-4" key={movie.id}>
                         <div className="card">
                             <img src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`} className="card-img-top" alt="..." />
-                            <button type="button" onClick={props.addRemoveFavs} data-movie-id={movie.id} className="btn btn-light btn-sm rounded-5 position-absolute my-1 mx-1 d-flex end-0 fs-6">❤️</button>
                             <div className="card-body">
                                 <h5 className="card-title">{movie.title}</h5>
-                                <p className="card-text">{movie.overview}</p>
                                 <Link to={`/detalle?movieId=${movie.id}`} className="btn btn-primary">Detalles</Link>
                             </div>
                         </div>
@@ -42,4 +45,4 @@ function Listado (props) {
     )
 }
 
-export default Listado;
+export default Resultado;

@@ -1,13 +1,24 @@
 import swal from "@sweetalert/with-react";
+import { useNavigate } from 'react-router-dom';
 
 function Buscador() {
 
+    const navigate = useNavigate();
+
     const submitHandler = e => {
         e.preventDefault();
-        const keyword = e.currentTarget.keyword.value;
+        const keyword = e.currentTarget.keyword.value.trim();
+        console.log(keyword)
 
         if(keyword.length === 0){
             swal(<h5>Debes escribir una palabra clave para buscar</h5>)
+        } 
+        else if(keyword.length < 4){
+            swal(<h5>Debes escribir por lo menos 4 caracteres para buscar</h5>)
+        } 
+        else{
+            e.currentTarget.keyword.value = '';
+            navigate(`/resultado?keyword=${keyword}`, { replace: true });
         }
     }
 
