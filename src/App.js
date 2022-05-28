@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import Login from "./components/Login";
 import Listado from "./components/Listado";
@@ -12,6 +13,16 @@ import "./css/bootstrap.min.css";
 
 function App() {
 
+  const [favoritos, setFavoritos] = useState([]);
+
+  useEffect(() => {
+      const favsLocal = localStorage.getItem('favs');
+
+      if (favsLocal !== null) {
+          const favsArray = JSON.parse(favsLocal);
+          setFavoritos(favsArray);
+      }
+  }, []);
 
   const addRemoveFavs = e => {
     const favsMovies = localStorage.getItem('favs');
@@ -39,6 +50,7 @@ function App() {
     if (!moviesExist) {
       tempMoviesFavs.push(movieData);
       localStorage.setItem('favs', JSON.stringify(tempMoviesFavs));
+      setFavoritos(tempMoviesFavs);
       console.log('Se agregó la película');
     }
     else {
@@ -46,6 +58,7 @@ function App() {
         return oneMovie.id !== movieData.id
       });
       localStorage.setItem('favs', JSON.stringify(moviesLeft));
+      setFavoritos(moviesLeft);
       console.log('Se eliminó la película');
     }
   }
@@ -59,7 +72,7 @@ function App() {
           <Route path="/listado" element={<Listado addRemoveFavs={addRemoveFavs} />}></Route>
           <Route path="/detalle" element={<Detalle />}></Route>
           <Route path="/resultado" element={<Resultado />}></Route>
-          <Route path="/favoritos" element={<Favoritos />}></Route>
+          <Route path="/favoritos" element={<Favoritos favoritos={favoritos} addRemoveFavs={addRemoveFavs} />}></Route>
         </Routes>
         <Footer></Footer>
       </div>

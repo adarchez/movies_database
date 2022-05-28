@@ -23,6 +23,7 @@ function Listado (props) {
     return (
         <>
             {!token && <Navigate to='/' />}
+            {!moviesList.length && <h4>No hay resultados</h4>}
             <div className="row">
                 {moviesList.map((movie) => (
                     <div className="col-3 my-4" key={movie.id}>
