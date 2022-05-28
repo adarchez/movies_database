@@ -6,22 +6,24 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Detalle from './components/Detalle';
 import Resultado from './components/Resultado';
+import Favoritos from './components/Favoritos';
 
 import "./css/bootstrap.min.css";
 
 function App() {
 
-  const favsMovies = localStorage.getItem('favs');
-  let tempMoviesFavs;
-
-  if (favsMovies === null){
-    tempMoviesFavs = [];
-  }
-  else{
-    tempMoviesFavs = JSON.parse(favsMovies);
-  }
 
   const addRemoveFavs = e => {
+    const favsMovies = localStorage.getItem('favs');
+    let tempMoviesFavs;
+
+    if (favsMovies === null) {
+      tempMoviesFavs = [];
+    }
+    else {
+      tempMoviesFavs = JSON.parse(favsMovies);
+    }
+
     const btn = e.currentTarget;
     const parent = btn.parentElement;
     const imgURL = parent.querySelector('img').getAttribute('src');
@@ -34,12 +36,12 @@ function App() {
     let moviesExist = tempMoviesFavs.find(oneMovie => {
       return oneMovie.id === movieData.id
     });
-    if(!moviesExist){
+    if (!moviesExist) {
       tempMoviesFavs.push(movieData);
       localStorage.setItem('favs', JSON.stringify(tempMoviesFavs));
       console.log('Se agregó la película');
     }
-    else{
+    else {
       let moviesLeft = tempMoviesFavs.filter(oneMovie => {
         return oneMovie.id !== movieData.id
       });
@@ -54,9 +56,10 @@ function App() {
       <div className='container mt-3'>
         <Routes>
           <Route exact path="/" element={<Login />}></Route>
-          <Route path="/listado" element={<Listado addRemoveFavs={addRemoveFavs} /> }></Route>
+          <Route path="/listado" element={<Listado addRemoveFavs={addRemoveFavs} />}></Route>
           <Route path="/detalle" element={<Detalle />}></Route>
           <Route path="/resultado" element={<Resultado />}></Route>
+          <Route path="/favoritos" element={<Favoritos />}></Route>
         </Routes>
         <Footer></Footer>
       </div>
